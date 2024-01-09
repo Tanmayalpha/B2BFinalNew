@@ -39,7 +39,7 @@
 //       'seller_id': '${userId}'
 //     };
 //     print("parametere ${params}");
-//     var response = await http.post(Uri.parse('https://developmentalphawizz.com/B2B/seller/app/v1/api/get_media'), body: params);
+//     var response = await http.post(Uri.parse('Https://b2bdiary.com/App/V1/Api/get_media'), body: params);
 //     var jsonResponse = convert.jsonDecode(response.body);
 //     if (jsonResponse['error'] == false) {
 //       setState(() {

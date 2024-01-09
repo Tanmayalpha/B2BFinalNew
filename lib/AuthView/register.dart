@@ -288,6 +288,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool isLodding = false;
  int? Otp;
   String? name,mobile,email;
+
   sendOtpRegister() async {
     setState(() {
       isLodding = true;
@@ -303,6 +304,7 @@ class _RegisterPageState extends State<RegisterPage> {
     });
 
     print(request.fields);
+    print(request.url);
 
     request.headers.addAll(headers);
 

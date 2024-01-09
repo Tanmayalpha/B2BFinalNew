@@ -311,7 +311,7 @@
 // //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 // //   var sessionId= sharedPreferences.getString('id');
 // //   var header = headers;
-// //   var request = http.MultipartRequest('POST', Uri.parse('https://developmentalphawizz.com/B2B/seller/app/v1/api/delete_account'));
+// //   var request = http.MultipartRequest('POST', Uri.parse('Https://b2bdiary.com/App/V1/Api/delete_account'));
 // //   request.fields.addAll({
 // //     'user_id': '${sessionId}'
 // //   });

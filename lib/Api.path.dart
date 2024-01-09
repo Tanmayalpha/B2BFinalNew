@@ -1,6 +1,8 @@
 class ApiService {
-  static const String baseUrl = "https://developmentalphawizz.com/B2B/seller/app/v1/api/";
-  static const String adbaseUrl = "https://developmentalphawizz.com/B2B/";
+  // static const String baseUrl = "https://developmentalphawizz.com/B2B/seller/app/v1/api/";
+  static const String baseUrl = "https://b2bdiary.com/seller/app/v1/api/";
+  static const String adbaseUrl = "https://b2bdiary.com/";
+  // static const String adbaseUrl = "https://developmentalphawizz.com/B2B/";
 
   static const String verifyOtp = baseUrl+'verify_user';
   static const String login = baseUrl+'login';

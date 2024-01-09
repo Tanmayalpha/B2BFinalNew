@@ -57,7 +57,7 @@ class _HomeFullCategoryState extends State<HomeFullCategory> {
     var headers = {
       'Cookie': 'ci_session=a0c4a8147cd6ca589ca5ea95dd55a72e8678d0d2'
     };
-    var request = http.MultipartRequest('POST', Uri.parse('https://developmentalphawizz.com/B2B/seller/app/v1/api/get_home_categories'));
+    var request = http.MultipartRequest('POST', Uri.parse('Https://b2bdiary.com/App/V1/Api/get_home_categories'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {

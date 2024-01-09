@@ -76,8 +76,11 @@ const String bankDetail =
 ApiBaseHelper apiBaseHelper = ApiBaseHelper();
 
 // for demo panels
-const String baseUrl = 'https://developmentalphawizz.com/B2B/seller/app/v1/api/';
-const String imageUrl = 'https://developmentalphawizz.com/B2B/';
 
+// const String baseUrl = 'https://b2bdiary.com/app/v1/api/';
+// const String imageUrl = 'ttps://b2bdiary.com/';
+// const String baseUrl = 'https://developmentalphawizz.com/b2b/seller/app/v1/api/';
+const String baseUrl = 'https://b2bdiary.com/seller/app/v1/api/';
+const String imageUrl = 'https://b2bdiary.com/';
 //const String ecomExpressUrl = 'https://clbeta.ecomexpress.in/track_me/api/mawbd/';
 const String jwtKey = 'https://alphawizzserver.com/';

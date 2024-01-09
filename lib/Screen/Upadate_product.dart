@@ -93,7 +93,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
   //   subCategory_id=preferences.getString("subcat_id");
   //
   //
-  //   var request = http.MultipartRequest('POST', Uri.parse('https://developmentalphawizz.com/B2B/seller/app/v1/api/get_product_list'));
+  //   var request = http.MultipartRequest('POST', Uri.parse('Https://b2bdiary.com/App/V1/Api/get_product_list'));
   //   request.fields.addAll({
   //     'category_id': categoryId.toString(),
   //     'sub_cat_id':subCategory_id.toString()
