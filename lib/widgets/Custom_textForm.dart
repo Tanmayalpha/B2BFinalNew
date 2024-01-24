@@ -20,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
         // border: OutlineInputBorder(),
         // filled: true,
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
               color: Colors.grey,
               fontSize: 14
           ),
@@ -28,7 +28,7 @@ class CustomTextFormField extends StatelessWidget {
       ),
       validator:(value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter ${hintText} .';
+          return 'Please enter $hintText .';
         }
         return null;
       },

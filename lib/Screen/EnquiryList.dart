@@ -63,8 +63,8 @@ class _EnquiryListState extends State<EnquiryList> {
             itemBuilder: (context,i){
               return  SingleChildScrollView(
                 child:
-                enquirModel == null  ||  enquirModel == "" ? Center(child: CircularProgressIndicator()):
-                enquirModel!.data!.length == 0 ? Center(child: Text("No Enquiry Found!!")):
+                enquirModel == null  ||  enquirModel == "" ? const Center(child: CircularProgressIndicator()):
+                enquirModel!.data!.length == 0 ? const Center(child: Text("No Enquiry Found!!")):
                 Container(
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(

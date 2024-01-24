@@ -63,10 +63,9 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
 
   @override
   Widget build(BuildContext context) {
-
     print('___dssdfsd_______${widget.pId}___${widget.businessName}______');
     return Scaffold(
-      appBar: customAppBar(text: "Product Details",isTrue: false, context: context),
+      appBar: customAppBar(text: "Product Detaisslss",isTrue: false, context: context),
       body:getHomeProductDetails == null || getHomeProductDetails == ""?const Center(child: CircularProgressIndicator()) : getHomeProductDetails!.data!.length == 0 ? const Center(child: Text("No Details Found!!")): Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -91,24 +90,27 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                 const SizedBox(height: 5,),
                   Text("${getHomeProductDetails?.data?.first.name}",style: const TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
                 const SizedBox(height: 5,),
-              RatingBar.builder(
-                itemSize: 20,
-                //initialRating: 3,
-                minRating: 0,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: getHomeProductDetails!.data!.first.sellerRating!.length,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context,_) => const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                 print(rating);
-
-                },
+              Row(
+                children: [
+                  RatingBar.builder(
+                    itemSize: 20,
+                    //initialRating: 3,
+                    minRating: 0,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: getHomeProductDetails!.data!.first.sellerRating!.length,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context,_) => const Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                     print(rating);
+                    },
+                  ),
+                  Text("${getHomeProductDetails?.data?.first.sellerRating} (Review)"),
+                ],
               ),
-                Text("${getHomeProductDetails?.data?.first.sellerRating} (Review)"),
 
                 const SizedBox(height: 5,),
               Container(
@@ -137,23 +139,51 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                   ],
                 )
               ),
-                const Text("Description",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
+                const Text("Description: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
                 const SizedBox(height: 5,),
                 Text("${getHomeProductDetails?.data?.first.shortDescription}"),
                 const SizedBox(height: 50,),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Btn(
-                        height: 40,
-                        width: 150,
-                        title: "Contact Supplier",
-                        onPress: () {
-                          showDialogContactSuplier(getHomeProductDetails?.data?.first.id ?? "", mobilee);
-                        },
-                      ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 95),
+                          child: Row(
+                            children: [
+                              const CircleAvatar(
+                                radius: 15,
+                                backgroundColor:
+                                colors.primary,
+                                child: Icon(
+                                  Icons.location_pin,
+                                  size: 15,
+                                  color: colors.white,
+                                ),
+                              ),
+                              SizedBox(width: 7,),
+                              Image.asset("Images/phone.png", scale: 2),
+                              SizedBox(width: 7,),
+                              Image.asset("Images/person.png", scale: 2),
+                              SizedBox(width: 7,),
+                              Image.asset("Images/register.png", scale: 2),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 10,),
+                        Container(
+                          color: Colors.transparent,
+                          child: Btn(
+                            height: 40,
+                            width: 150,
+                            title: "Contact Supplier",
+                            onPress: () {
+                              showDialogContactSuplier(getHomeProductDetails?.data?.first.id ?? "", mobilee);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

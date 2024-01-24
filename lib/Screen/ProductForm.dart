@@ -298,7 +298,13 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     return
 
       Scaffold(
-        appBar: customAppBar(context: context, text: 'Product Form', isTrue: false),
+        appBar: AppBar(
+          backgroundColor: colors.primary,
+          title: const Text("Product Form"),
+          centerTitle: true,
+          elevation: 0,
+        ),
+        // customAppBar(context: context, text: 'Product Form', isTrue: false),
         // appBar: AppBar(
         //   backgroundColor: colors.primary,
         //   title: Text("Product Form"),

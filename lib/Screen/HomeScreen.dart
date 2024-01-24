@@ -3979,7 +3979,6 @@ class _B2BHomeState extends State<B2BHome> {
               );
             },
           ),
-
           userId == 'null'
               ? const SizedBox()
               : ListTile(
@@ -4593,8 +4592,8 @@ class _B2BHomeState extends State<B2BHome> {
                       Container(
                         color: colors.primary,
                         height: 60,
-                        child: Row(
-                          children: const [
+                        child:  Row(
+                          children: [
                             SizedBox(
                               width: 20,
                             ),

@@ -79,18 +79,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(height: 10,),
-
-
-                   Positioned(
-                    top: 20,
-                    left: 100,
-                    child:  Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Center(child: Image.asset("Images/loginlogo.png",scale: 3,)),
-                    ),
-                  ),
-
-//Center Container
+                  //  Positioned(
+                  //   top: 20,
+                  //   left: 100,
+                  //   child:  Padding(
+                  //     padding: const EdgeInsets.only(top: 10),
+                  //     child: Center(child: Image.asset("Images/loginlogo.png",scale: 3,)),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 25, right: 25, bottom: 300, top: 150),
@@ -108,6 +104,10 @@ class _LoginPageState extends State<LoginPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
 //Welcome
+                        Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Center(child: Image.asset("Images/loginlogo.png",scale: 4,)),
+                          ),
                             const Padding(
                               padding: EdgeInsets.only(top: 30),
                               child: Text(
@@ -133,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
 
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 100, left: 30, bottom: 50, right: 30),
+                                  top: 40, left: 30, bottom: 50, right: 30),
                               child: Form(
                                 key: _formKey,
                                 child: TextFormField(
@@ -177,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
 //Send otp
 
                             Padding(
-                              padding: const EdgeInsets.all(28.0),
+                              padding: const EdgeInsets.all(25.0),
                               child: InkWell(
                                 onTap: () {
                                   if (_formKey.currentState!.validate()) {

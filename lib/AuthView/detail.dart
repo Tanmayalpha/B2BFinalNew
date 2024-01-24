@@ -11,6 +11,7 @@ import 'package:b2b/widgets/multi_select_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -219,6 +220,55 @@ class _DetailPageState extends State<DetailPage> {
     }*/
   }
 
+  String? _filePath;
+
+  Future<void> _pickPDF() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+    if (result != null) {
+      print("hjhjhjhjh ${result.files.single.path.runtimeType} ${result.files.single.path}");
+      setState(() {
+        // imageFile = result.files.single.path;
+        imageFile = File( result.files.single.path ??"");
+      });
+    }
+  }
+
+  Future<void> _showPdfAlert() async {
+    if (_filePath != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('PDF Viewer'),
+            content: Container(
+              width: double.infinity,
+              height: 300, // Set the desired height
+              child: PDFView(
+                filePath: _filePath!,
+                onPageChanged: (int? page, int? totalPages) {},
+                onViewCreated: (PDFViewController pdfViewController) {},
+                onRender: (int? pages) {},
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  showExitPopup1();
+                },
+                child: const Text('Close'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -233,17 +283,17 @@ class _DetailPageState extends State<DetailPage> {
                 Stack(
                   children: [
                     Image.asset('Images/bg-4.png'),
-                    Positioned(
-                      top: 20,
-                      left: 80,
-                      child:  Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Center(child: Image.asset("Images/loginlogo.png",scale: 3,)),
-                      ),
-                    ),
+                    // Positioned(
+                    //   top: 20,
+                    //   left: 80,
+                    //   child:  Padding(
+                    //     padding: const EdgeInsets.only(top: 10),
+                    //     child: Center(child: Image.asset("Images/loginlogo.png",scale: 3,)),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 25, right: 25, bottom: 300, top: 150),
+                          left: 25, right: 25, bottom: 300, top: 100),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -578,6 +628,12 @@ class _DetailPageState extends State<DetailPage> {
                                 child: InkWell(
                                   onTap: () {
                                     showExitPopup1();
+                                    // if(_filePath != null){
+                                    //   // _showPdfAlert();
+                                    // }
+                                    // else{
+                                    //   showExitPopup1();
+                                    // }
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(
@@ -588,33 +644,33 @@ class _DetailPageState extends State<DetailPage> {
                                       child: imageFile == null ||
                                           imageFile == ""
                                           ? Row(
-                                        children: [
-                                          Padding(
+                                        children:  [
+                                          const Padding(
                                             padding:
-                                            const EdgeInsets.only(
-                                                left: 14, right: 13),
+                                            EdgeInsets.only(left: 14, right: 13),
                                             child: Icon(
                                               Icons.business_sharp,
                                               color: Colors.grey,
                                             ),
                                           ),
                                           Text(
-                                            "Business Broucher (Optional)",
-                                            style: TextStyle(
+                                            imageFile!.path,
+                                            style: const TextStyle(
                                                 color: colors.black,
                                                 fontWeight:
                                                 FontWeight.bold,
                                                 fontSize: 13),
-                                          )
+                                          ),
                                         ],
-                                      )
-                                          : Padding(
+                                      ):
+                                          // : _filePath == null?
+                                      Padding(
                                         padding: const EdgeInsets.only(
                                             left: 10, right: 20),
                                         child: Column(
                                           children: [
                                             Row(
-                                              children: [
+                                              children: const [
                                                 SizedBox(
                                                   width: 10,
                                                 ),
@@ -628,13 +684,12 @@ class _DetailPageState extends State<DetailPage> {
                                                 ),
                                               ],
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 5,
                                             ),
                                             ClipRRect(
                                               borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
+                                              BorderRadius.circular(10),
                                               child: Image.file(
                                                 imageFile!,
                                                 height: 100,
@@ -645,11 +700,12 @@ class _DetailPageState extends State<DetailPage> {
                                           ],
                                         ),
                                       ),
+                                            // :const SizedBox.shrink()
                                     ),
                                   ),
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                   color: Colors.grey,
                                   indent: 30,
                                   endIndent: 30,
@@ -1005,7 +1061,6 @@ class _DetailPageState extends State<DetailPage> {
                                   // },
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(
                                     top: 2, left: 30, bottom: 2, right: 30),
@@ -1267,31 +1322,53 @@ class _DetailPageState extends State<DetailPage> {
           title: const Text('Select Image'),
           content: Row(
             // crossAxisAlignment: CrossAxisAlignment.s,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ElevatedButton(
-                onPressed: () {
-                  getImage(ImageSource.camera, context, 1);
-                },
-                child: const Text('Camera'),
+              Container(
+                height: 30,
+                width: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    getImage(ImageSource.camera, context, 1);
+                  },
+                  child: const Text('Camera', style: TextStyle(fontSize: 10),),
+                ),
               ),
               const SizedBox(
-                width: 15,
+                width: 11,
               ),
-              ElevatedButton(
-                onPressed: () {
-                  getImageCmera(ImageSource.gallery, context, 1);
-                },
-
-                //return true when click on "Yes"
-                child: Text('Gallery'),
+              Container(
+                height: 30,
+                width: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    getImageCmera(ImageSource.gallery, context, 1);
+                  },
+                  //return true when click on "Yes"
+                  child: const Text('Gallery', style: TextStyle(fontSize: 10)),
+                ),
+              ),
+              const SizedBox(
+                width: 11,
+              ),
+              Container(
+                height: 30,
+                width: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    _pickPDF();
+                    Navigator.pop(context);
+                    // getImageCmera(ImageSource.gallery, context, 1);
+                  },
+                  //return true when click on "Yes"
+                  child: const Text('PDf', style: TextStyle(fontSize: 10),),
+                ),
               ),
             ],
           )),
     ) ??
         false; //if showDialouge had returned null, then return false
   }
-
 
   bool isLoading = false;
 
