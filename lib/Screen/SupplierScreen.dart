@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:b2b/AuthView/otp_verify.dart';
 import 'package:b2b/Model/temp_model.dart';
@@ -49,11 +50,9 @@ class _SupplierScreenState extends State<SupplierScreen> {
     super.initState();
     businessCategory();
     getSupplier();
-
     homeCategories();
     getProfile();
     // selectedBusiness=widget.isManu.toString();
-
     mobilee = yourMobileNumber.text;
   }
 
@@ -125,6 +124,7 @@ class _SupplierScreenState extends State<SupplierScreen> {
   TextEditingController numCtr = TextEditingController();
 
   String? selectedBusiness;
+  String? selectedCity;
   int? selectedBusinessIndex;
   String? businessId;
   var businessName;
@@ -599,6 +599,7 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                   alignment: Alignment.centerLeft,
                                   child: const Text(
                                     "Business Categories :",
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
@@ -666,6 +667,83 @@ class _SupplierScreenState extends State<SupplierScreen> {
                                                 const EdgeInsets.only(top: 0),
                                             child: Text(
                                               items.name.toString(),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                  color: colors.black),
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: const Text(
+                                    "City",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                          color:
+                                          colors.black.withOpacity(0.4))),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2<String>(
+                                      //value: selectedBusiness[0],
+                                      isExpanded: true,
+
+                                      hint: const Text(
+                                        "Cities",
+                                        style: TextStyle(
+                                            color: colors.black, fontSize: 13),
+                                      ),
+                                      // dropdownColor: colors.primary,
+                                      value: selectedCity,
+                                      // icon: const Padding(
+                                      //   padding: EdgeInsets.only(right:10.0),
+                                      //   child: Icon(Icons.keyboard_arrow_down_rounded,  color:colors.secondary,size: 10,),
+                                      // ),
+                                      // style:  const TextStyle(color: colors.secondary,fontWeight: FontWeight.bold),
+                                      underline: Container(
+                                        width: 10,
+                                        color: colors.white,
+                                      ),
+                                      onChanged: (String? value) {
+                                        setState(() {
+                                          selectedCity = value!;
+
+                                        });
+                                        searchProduct(value ?? '');
+
+                                      },
+                                      items: cityList.map((items) {
+                                        return DropdownMenuItem(
+                                          value: items,
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.only(top: 0),
+                                            child: Text(
+                                              items,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
                                                   color: colors.black),
@@ -1317,6 +1395,7 @@ class _SupplierScreenState extends State<SupplierScreen> {
 
   List<TempModel> tempList = [];
   List<TempMode2> valueList = [];
+  List<String> cityList = [];
 
   Future<void> getSupplier() async {
     setState(() {
@@ -1328,12 +1407,9 @@ class _SupplierScreenState extends State<SupplierScreen> {
       "type": '1',
       "seller_id": userId == null ? "" : userId,
     };
+    print("parameter is in $param");
     param["buisness_category"] = widget.isManu == null && (businessName == null || businessName == 'Select All')
-        ? ""
-        : businessName == null
-            ? widget.isManu
-            : businessName == 'Select All' ? '' :businessName;
-
+        ? "" : businessName == null ? widget.isManu : businessName == 'Select All' ? '' :businessName;
     apiBaseHelper.postAPICall(getSupplierOrClientApi, param).then((getData) {
       valueList.clear();
       List<String> list = [];
@@ -1345,17 +1421,21 @@ class _SupplierScreenState extends State<SupplierScreen> {
               !(list.contains(element.name))) {
             list.add(element.name ?? '');
             // var data = TempModel.fromJson(getData['data'][element.name]);
-            tempList = (getData['data'][element.name] as List)
-                .map((e) => TempModel.fromJson(e))
-                .toList();
+            tempList = (getData['data'][element.name] as List).map((e) => TempModel.fromJson(e)).toList();
             getData['data'][element.name];
-            valueList.add(TempMode2(
+            valueList.add( TempMode2(
                 temp: tempList, catName: tempList.first.categoryName));
           }
+          // print("temp model is ${tempList.first.lat} ${tempList.first.lang}");
         });
         setState(() {
           isLoading = false;
         });
+        print("temp model is ${tempList.first.lat} ${tempList.first.lang}");
+        tempList.forEach((element) {
+          cityList.add(element.city ?? '');
+        });
+
       } else {
         Fluttertoast.showToast(msg: msg);
         setState(() {
@@ -1764,6 +1844,24 @@ class _SupplierScreenState extends State<SupplierScreen> {
       }
     } else {
       print(response.reasonPhrase);
+    }
+  }
+
+
+  searchProduct(String value) {
+    if (value.isEmpty) {
+      setState(() {
+      });
+    }else{
+      final suggestions = tempList.where((element) {
+        final productTitle = element.city!.toLowerCase();
+        final input = value.toLowerCase();
+        return productTitle.contains(input);
+      }).toList();
+      tempList = suggestions;
+      valueList = [];
+      valueList.add(TempMode2(temp: tempList, catName: tempList.first.categoryName));
+      setState(() {});
     }
   }
 }

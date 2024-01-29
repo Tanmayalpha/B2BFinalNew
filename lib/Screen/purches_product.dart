@@ -73,14 +73,10 @@ class _GetPurchesState extends State<GetPurches> {
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(height: 10,),
-
                             Text( "Purches Product : ${getPurchesProductModel!.purchaesData?[i].name}"),
                             SizedBox(height: 10,),
-
-
                           ],
                         ),
-
                       ],
                     ),
                   ),

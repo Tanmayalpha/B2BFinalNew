@@ -641,11 +641,10 @@ class _DetailPageState extends State<DetailPage> {
                                     child: Container(
                                       width: double.infinity,
                                       height: imageFile == null ? 50 : 140,
-                                      child: imageFile == null ||
-                                          imageFile == ""
+                                      child: imageFile == null
                                           ? Row(
-                                        children:  [
-                                          const Padding(
+                                        children:  const [
+                                          Padding(
                                             padding:
                                             EdgeInsets.only(left: 14, right: 13),
                                             child: Icon(
@@ -654,17 +653,17 @@ class _DetailPageState extends State<DetailPage> {
                                             ),
                                           ),
                                           Text(
-                                            imageFile!.path,
-                                            style: const TextStyle(
+                                            'Business Broucher (Optional)',
+                                            style: TextStyle(
                                                 color: colors.black,
                                                 fontWeight:
                                                 FontWeight.bold,
                                                 fontSize: 13),
                                           ),
                                         ],
-                                      ):
+                                      )
                                           // : _filePath == null?
-                                      Padding(
+                                          : Padding(
                                         padding: const EdgeInsets.only(
                                             left: 10, right: 20),
                                         child: Column(
@@ -687,7 +686,32 @@ class _DetailPageState extends State<DetailPage> {
                                             const SizedBox(
                                               height: 5,
                                             ),
-                                            ClipRRect(
+                                              imageFile?.path.split('.').last.toLowerCase() == 'pdf'  ?
+                                              Container(
+                                                //width: 200.0,
+                                                //height: 120.0,
+                                                padding: const EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children:  [
+                                                    const Icon(
+                                                      Icons.picture_as_pdf,
+                                                      size: 50.0,
+                                                      color: Colors.red,
+                                                    ),
+                                                    const SizedBox(height: 8.0),
+                                                    Text(
+                                                        ' ${imageFile?.path.split('/').last.toLowerCase()}',
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                                  : ClipRRect(
                                               borderRadius:
                                               BorderRadius.circular(10),
                                               child: Image.file(
@@ -1239,7 +1263,7 @@ class _DetailPageState extends State<DetailPage> {
                                         SnackBar(content: Text('Please Select user'));
                                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                       }else{
-                                       // userRegisterApi(false);
+                                       userRegisterApi(false);
                                       }
 
                                     }else{
@@ -1398,8 +1422,6 @@ class _DetailPageState extends State<DetailPage> {
       'address': businessAddressController.text,
       'company': companycontroller.text,
       'complete': '1',
-
-
     });
     print('____Sasasass______${request.fields}_________');
 
@@ -1412,12 +1434,12 @@ class _DetailPageState extends State<DetailPage> {
     if (response.statusCode == 200) {
       var result = await response.stream.bytesToString();
 
-      print('==============${result}');
+      print('==============$result');
       var finalResult = jsonDecode(result);
       if (finalResult['error'] == true) {
         setState(() {
           userIdd1 = finalResult['data'].toString();
-          print('user id in rigister time=============${userIdd1}');
+          print('user id in rigister time=============$userIdd1');
         });
 
         final SharedPreferences sharedPreferences =

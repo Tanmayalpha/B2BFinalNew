@@ -16,6 +16,7 @@ class TempModel {
   String? typeOfSeller;
   String? sellerId;
   String? sellerName;
+  String? city;
 
   String? sellerAddress;
   String? id;
@@ -106,6 +107,7 @@ class TempModel {
     this.categoryId,
     this.shortDescription,
     this.slug,
+    this.city,
     this.description,
     this.extraDescription,
     this.totalAllowedQuantity,
@@ -169,6 +171,7 @@ class TempModel {
   TempModel.fromJson(Map<String, dynamic> json) {
     total = json['total'];
     sales = json['sales'];
+    city= json['city'];
     stockType = json['stock_type'];
     isPricesInclusiveTax = json['is_prices_inclusive_tax'];
     type = json['type'];

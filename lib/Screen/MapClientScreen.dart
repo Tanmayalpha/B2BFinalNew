@@ -46,7 +46,6 @@ class _GoogleMapClientState extends State<GoogleMapClient> {
         {
           lat.add(element.sellerInfo?.latitude ?? "0.0");
           long.add(element.sellerInfo?.longitude ?? "0.0");
-
         }
         restoName.add(element.sellerInfo?.username ?? "");
 

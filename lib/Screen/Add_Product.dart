@@ -252,14 +252,10 @@ class _AddProductState extends State<AddProduct> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,),
+                  SizedBox(width: MediaQuery.of(context).size.width,),
                   Custom_Text(text: 'Name', text2: '*',),
                   const SizedBox(height: 10,),
-                  CustomTextFormField(
-                      controller: _nameCtr, hintText: 'Product Name'),
+                  CustomTextFormField(controller: _nameCtr, hintText: 'Product Name'),
                   const SizedBox(height: 20,),
                   Custom_Text(text: 'Category', text2: ' *',),
                   const SizedBox(height: 10,),
@@ -272,12 +268,12 @@ class _AddProductState extends State<AddProduct> {
                     child: DropdownButton<String>(
                       isExpanded: true,
                       hint: const Text('Select Category',
-                        style: TextStyle(
-                            color: colors.black,fontWeight: FontWeight.w500,fontSize:15
-                        ),),
+                        style: TextStyle(color: colors.black,fontWeight: FontWeight.w500,fontSize:15
+                        ),
+                      ),
                       // dropdownColor: colors.primary,
                       value: selectedState,
-                      icon:  const Padding(
+                      icon: const Padding(
                         padding: EdgeInsets.only(left:10.0,top: 10),
                         child: Icon(Icons.keyboard_arrow_down_rounded,  color:Colors.grey,size: 25,),
                       ),
@@ -320,15 +316,10 @@ class _AddProductState extends State<AddProduct> {
                                       child: Text(items.name.toString(),overflow:TextOverflow.ellipsis,style: const TextStyle(color:colors.black),),
                                     )),
                               ),
-
-
                             ],
                           ),
                         );
-                      })
-                          .toList(),
-
-
+                      }).toList(),
                     ),
                   ),
                   Divider(color: colors.black,),
@@ -386,12 +377,12 @@ class _AddProductState extends State<AddProduct> {
                         ),),
                       // dropdownColor: colors.primary,
                       value: selectedSub,
-                      icon:  const Padding(
+                      icon: const Padding(
                         padding: EdgeInsets.only(left:10.0,top: 10),
                         child: Icon(Icons.keyboard_arrow_down_rounded,  color:Colors.grey,size: 25,),
                       ),
                       // elevation: 16,
-                      style:  const TextStyle(color: colors.secondary,fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: colors.secondary,fontWeight: FontWeight.bold),
                       underline: Padding(
                         padding: const EdgeInsets.only(left: 0,right: 0),
                         child: Container(
@@ -407,7 +398,6 @@ class _AddProductState extends State<AddProduct> {
                             if(element.name == value){
                               selectedSateIndex = getSubCatModel!.data!.indexOf(element);
                               subCatId = element.id;
-
                               //getStateApi();
                             }
                           });
@@ -429,15 +419,10 @@ class _AddProductState extends State<AddProduct> {
                                       child: Text(items.name.toString(),overflow:TextOverflow.ellipsis,style: const TextStyle(color:colors.black),),
                                     )),
                               ),
-
-
                             ],
                           ),
                         );
-                      })
-                          .toList(),
-
-
+                      }).toList(),
                     ),
                   ),
                   Divider(color: Colors.grey,),
@@ -447,7 +432,7 @@ class _AddProductState extends State<AddProduct> {
                   TextFormField(
                     maxLines: 3,
                     controller: _shortDesCtr,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 10, horizontal: 10),
                       border: OutlineInputBorder(),
@@ -461,20 +446,20 @@ class _AddProductState extends State<AddProduct> {
                       return null;
                     },
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Custom_Text(text: 'Tags', text2: ' *',),
-                      Text('(These tags help you in search result )',
-                        style: TextStyle(fontSize: 12),)
+                      const Text('(These tags help you in search result )',
+                        style: TextStyle(fontSize: 12))
                     ],
                   ),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   TextFormField(
                     controller: tagC,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Type in some tags for example AC,Cooler,Flagship Smartphone,Mobiles,Sport Shose ect',
                       hintStyle: TextStyle(color: Colors.grey),
                       //
@@ -549,7 +534,8 @@ class _AddProductState extends State<AddProduct> {
                       hint: const Text('Select Category',
                         style: TextStyle(
                             color: colors.black,fontWeight: FontWeight.w500,fontSize:15
-                        ),),
+                        ),
+                      ),
                       // dropdownColor: colors.primary,
                       value: selectBrand,
                       icon:  const Padding(
@@ -717,7 +703,7 @@ class _AddProductState extends State<AddProduct> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(0),
                                   child: Image.network(
-                                    'https://developmentalphawizz.com/B2B${otherImageList[index]}',
+                                    '${imageUrl}${otherImageList[index]}',
                                     height: 100,
                                     width: 100,
                                     fit: BoxFit.fill,
@@ -1268,7 +1254,7 @@ class _AddProductState extends State<AddProduct> {
       'categorys_id': stateId ?? '1',
       'sub_cat_id': subCatId ?? '1',
       'product_type': 'simple_type',
-      'pro_input_image': productImageUrl1?.split('B2B')[1] ?? '',
+      'pro_input_image': productImageUrl1?.split('.com/')[1] ?? '',
       'other_images': otherImageList.join(','),
       'attribute_values': '1',
       'simple_price': '4',

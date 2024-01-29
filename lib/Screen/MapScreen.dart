@@ -37,6 +37,7 @@ List  <Marker> list = [];
         {
           lat.add(element.lat ?? "0.0");
           long.add(element.lang ?? "0.0");
+          print("kjaskahsjkahsjhajk ${element.lat != '' && element.lang != ''}");
         }
         restoName.add(element.storeName ?? "");
       });
@@ -44,7 +45,7 @@ List  <Marker> list = [];
 
     for(int i =0; i<lat.length; i ++ ){
       list.add(Marker(
-        markerId:  MarkerId('${i}'),
+        markerId:  MarkerId('$i'),
         position: LatLng(double.parse(lat[i]), double.parse(long[i])), // Replace with the coordinates of your placeMark
         infoWindow: InfoWindow(title: restoName[i]),
       ),);
@@ -129,23 +130,19 @@ List  <Marker> list = [];
             LatLngBounds bounds = LatLngBounds(southwest: southwest, northeast: northeast);
 
             CameraUpdate cameraUpdate = CameraUpdate.newLatLngBounds(bounds, 50);
-
             LatLng center = LatLng(
               (bounds.northeast.latitude + bounds.southwest.latitude) ,
               (bounds.northeast.longitude + bounds.southwest.longitude) ,
             );
-
             CameraPosition cameraPosition = CameraPosition(
               target: center , // Center of the bounds
               //zoom: 14, // Adjust the zoom level as needed
             );
-
             controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));// 50 is padding
             controller.animateCamera(cameraUpdate);
           }
           setState(() {
             mapController = controller;
-
           });
         },
         markers:Set<Marker>.of(list),
@@ -153,7 +150,6 @@ List  <Marker> list = [];
 
       ),
     );
-
       // GoogleMap(
       //   onMapCreated: (GoogleMapController controller){_controller.complete(controller);},
       //   initialCameraPosition: _kGoogle,
@@ -161,7 +157,5 @@ List  <Marker> list = [];
       //   myLocationEnabled: true,
       //
       // ),
-
-
   }
 }

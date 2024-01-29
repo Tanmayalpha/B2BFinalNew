@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:b2b/Screen/HomeScreen.dart';
 import 'package:b2b/apiServices/apiConstants.dart';
@@ -63,9 +64,8 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
 
   @override
   Widget build(BuildContext context) {
-    print('___dssdfsd_______${widget.pId}___${widget.businessName}______');
     return Scaffold(
-      appBar: customAppBar(text: "Product Detaisslss",isTrue: false, context: context),
+      appBar: customAppBar(text: "Product Detail",isTrue: false, context: context),
       body:getHomeProductDetails == null || getHomeProductDetails == ""?const Center(child: CircularProgressIndicator()) : getHomeProductDetails!.data!.length == 0 ? const Center(child: Text("No Details Found!!")): Card(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -84,7 +84,8 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                     Text("${getHomeProductDetails?.data?.first.storeName}",style: const TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
                     SizedBox(
                       width: 110,
-                        child: Text("(${widget.businessName})",style: const TextStyle(color: colors.black,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,),maxLines: 1,)),
+                        child: Text("(${widget.businessName})",style: const TextStyle(color: colors.black,fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis,),
+                          maxLines: 1,)),
                   ],
                 ),
                 const SizedBox(height: 5,),
@@ -140,9 +141,28 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                 )
               ),
                 const Text("Description: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
-                const SizedBox(height: 5,),
+                const SizedBox(height: 5),
                 Text("${getHomeProductDetails?.data?.first.shortDescription}"),
-                const SizedBox(height: 50,),
+                const SizedBox(height: 5,),
+                const Text("Address: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
+                Row(
+                  children: [
+                    Text("${getHomeProductDetails?.data?.first.address}"
+                    ),
+                    SizedBox(width: 2,),
+                    Text("${getHomeProductDetails?.data?.first.city}, ",),
+                    SizedBox(width: 2,),
+                     Text( "${getHomeProductDetails?.data?.first.pincode}, "),
+                  ],
+                ),
+               Row(
+                 children: [
+                   Text("${getHomeProductDetails?.data?.first.destrict}, "),
+                   const SizedBox(width: 2,),
+                   Text("${getHomeProductDetails?.data?.first.stateName}"),
+                 ],
+               ),
+                const SizedBox(height: 50),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -162,11 +182,11 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                                   color: colors.white,
                                 ),
                               ),
-                              SizedBox(width: 7,),
+                              const SizedBox(width: 7,),
                               Image.asset("Images/phone.png", scale: 2),
-                              SizedBox(width: 7,),
+                              const SizedBox(width: 7,),
                               Image.asset("Images/person.png", scale: 2),
-                              SizedBox(width: 7,),
+                              const SizedBox(width: 7,),
                               Image.asset("Images/register.png", scale: 2),
                             ],
                           ),
@@ -211,11 +231,12 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
+
             return AlertDialog(
               backgroundColor: Colors.transparent,
               content: Container(
                 height: userId == "null" ? 400 : 250,
-                width: MediaQuery.of(context).size.width / 1.2,
+                width: MediaQuery.of(context).size.width/1.2,
                 // width: double.infinity,
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
@@ -228,11 +249,11 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                           color: colors.primary,
                           height: 60,
                           child: Row(
-                            children: [
-                              const SizedBox(
+                            children: const [
+                              SizedBox(
                                 width: 20,
                               ),
-                              const Text(
+                              Text(
                                 'Contact Supplier',
                                 style: TextStyle(
                                     color: Colors.white,
@@ -255,7 +276,7 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                                 maxLength: 10,
                                 readOnly: true,
                                 controller: yourMobileNumber,
-                                decoration: new InputDecoration(
+                                decoration: InputDecoration(
                                   prefixIcon: const Padding(
                                     padding:
                                     EdgeInsets.only(top: 3),
@@ -270,10 +291,10 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                                   const EdgeInsets.only(top: 0, left: 0),
                                   hintText: "Your Mobile",
                                   fillColor: Colors.white,
-                                  border: new OutlineInputBorder(
+                                  border: OutlineInputBorder(
                                     borderRadius:
-                                    new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(),
+                                     BorderRadius.circular(5.0),
+                                    borderSide:  BorderSide(),
                                   ),
                                 ),
                                 validator: (val) {
@@ -299,15 +320,15 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                                   left: 10, right: 10),
                               child: TextFormField(
                                 controller: yournamecontroller,
-                                decoration: new InputDecoration(
+                                decoration:  InputDecoration(
                                   contentPadding:
                                   const EdgeInsets.only(top: 5, left: 5),
                                   hintText: "Your Name",
                                   fillColor: Colors.white,
-                                  border: new OutlineInputBorder(
+                                  border:  OutlineInputBorder(
                                     borderRadius:
-                                    new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(),
+                                     BorderRadius.circular(5.0),
+                                    borderSide:  BorderSide(),
                                   ),
                                 ),
 
@@ -333,15 +354,13 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                                 maxLength: 10,
                                 readOnly: true,
                                 controller: yourMobileNumber,
-                                decoration: new InputDecoration(
-                                  contentPadding:
-                                  const EdgeInsets.only(top: 5, left: 5),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.only(top: 5, left: 5),
                                   hintText: "Your Mobile",
-                                  fillColor: Colors.white,
-                                  border: new OutlineInputBorder(
-                                    borderRadius:
-                                    new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(),
+                                  fillColor:Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(),
                                   ),
                                 ),
                                 validator: (val) {
@@ -363,15 +382,15 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                                   left: 10, right: 10),
                               child: TextFormField(
                                 controller: YourcityController,
-                                decoration: new InputDecoration(
+                                decoration: InputDecoration(
                                   contentPadding:
                                   const EdgeInsets.only(top: 5, left: 5),
                                   hintText: "Your City",
                                   fillColor: Colors.white,
-                                  border: new OutlineInputBorder(
+                                  border: OutlineInputBorder(
                                     borderRadius:
-                                    new BorderRadius.circular(5.0),
-                                    borderSide: new BorderSide(),
+                                     BorderRadius.circular(5.0),
+                                    borderSide: BorderSide(),
                                   ),
                                 ),
                                 validator: (val) {
@@ -468,11 +487,11 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                         color: colors.primary,
                         height: 60,
                         child: Row(
-                          children: [
-                            const SizedBox(
+                          children: const [
+                            SizedBox(
                               width: 20,
                             ),
-                            const Text(
+                            Text(
                               'Contact Supplier',
                               style: TextStyle(
                                   color: Colors.white,
@@ -488,7 +507,7 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                             height: 20,
                           ),
                           Text(
-                            'OTP : ${OTPIS}',
+                            'OTP : $OTPIS',
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -581,6 +600,7 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
       print(response.reasonPhrase);
     }
   }
+
   GetHomeProductDetailsModel? getHomeProductDetails ;
   getProductDetailsApi() async {
     var headers = {
@@ -599,11 +619,11 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
       setState(() {
         getHomeProductDetails = finalResult;
       });
-      print('____Aaa______${result}_________');
+      log('____Aaa______${result}_________');
     }
     else {
-    print(response.reasonPhrase);
+    print(response.reasonPhrase)
+    ;
     }
-
   }
 }

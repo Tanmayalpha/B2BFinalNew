@@ -31,7 +31,8 @@ class _OurActivityState extends State<OurActivity> {
       body:getOurModel == null || getOurModel == "" ? Center(child: CircularProgressIndicator()): getOurModel!.data!.length == 0 ? Text("No our activity found!!!"): SingleChildScrollView(
         child: ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          reverse: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: getOurModel!.data!.length,
             itemBuilder: (context,i){
             var  showData = getOurModel!.data![i];
@@ -42,16 +43,16 @@ class _OurActivityState extends State<OurActivity> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                 Text("${showData.message}",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
-                  SizedBox(height: 20,),
+                 Text("${showData.message}",style: const TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
+                  const SizedBox(height: 20,),
                   showData.image == null ||  showData.image  == ""? ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                      child: Image.asset("Images/no-image-icon.png",height: 200,width:double.infinity,fit: BoxFit.fill,)) :Container(
+                      child: Image.asset("Images/no-image-icon.png",height: 200,width:double.infinity,fit: BoxFit.fill,)) :SizedBox(
                     width: double.infinity,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                           child: Image.network("${showData.image}",fit: BoxFit.fill,))),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                    Container(
                   //  height:MediaQuery.of(context).size.height/3.2,
                     margin: const EdgeInsets.only(bottom: 10),

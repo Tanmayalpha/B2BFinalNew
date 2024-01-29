@@ -54,6 +54,8 @@ class ApiBaseHelper {
 
       log('${response.statusCode}');
 
+
+
       responseJson = _response(response);
     } on SocketException catch (e) {
       throw ApiException('No Internet connection');

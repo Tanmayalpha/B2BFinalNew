@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:b2b/AuthView/register.dart';
 import 'package:b2b/Screen/Media.dart';
@@ -137,13 +138,18 @@ class _UpdateProductState extends State<UpdateProduct> {
   void initState() {
     // TODO: implement initState
      //fetchData();
-    getProductApi();
+    init();
     getCategory();
     getBrandApi();
-    getSubCategory("");
     super.initState();
   }
   ProductUpdateModel? getProductModel;
+
+
+  init() async{
+    await getProductApi();
+    getSubCategory("");
+  }
 
 
   getProductApi() async {
@@ -164,29 +170,21 @@ class _UpdateProductState extends State<UpdateProduct> {
       var finalResult  = ProductUpdateModel.fromJson(jsonDecode(result));
       setState(() {
         getProductModel = finalResult;
-        print('_____surendra_____${finalResult}______${result}___');
-
-        _nameCtr.text =   getProductModel!.data!.first.name  ?? "";
-        _extraDesCtr.text = getProductModel!.data!.first.extraDescription  ?? "";
-        _shortDesCtr.text =   getProductModel!.data!.first.shortDescription  ?? "";
-        _fullDesCtr.text =   getProductModel!.data!.first.description  ?? "";
-        selectedState =   getProductModel!.data!.first.categoryName  ?? "";
-        productImageUrl1 =   getProductModel!.data!.first.image  ?? "";
-
-        videoType = getProductModel!.data!.first.videoType == '' ? "None" :  getProductModel!.data!.first.videoType ?? "None";
-
-
-        selectedSub =   getProductModel!.data!.first.subCatName;
-        print('____videotype______${getProductModel!.data!.first.subCatName?.length}_________');
+        _nameCtr.text = getProductModel!.data!.first.name ?? "";
+        _extraDesCtr.text = getProductModel!.data!.first.extraDescription ?? "";
+        _shortDesCtr.text = getProductModel!.data!.first.shortDescription ?? "";
+        _fullDesCtr.text = getProductModel!.data!.first.description ?? "";
+        selectedState = getProductModel!.data!.first.categoryName ?? "";
+        productImageUrl1 = getProductModel!.data!.first.image ?? "";
+        tagC.text = getProductModel!.data!.first!.tags.toString();
+        videoType = getProductModel!.data!.first.videoType == '' ? "None" : getProductModel!.data!.first.videoType ?? "None";
+        selectBrand = getProductModel!.data!.first!.brand.toString();
       });
     }
     else {
       print(response.reasonPhrase);
     }
-
   }
-
-
 
   onclick() async {
      CustomTextFormField(
@@ -194,7 +192,6 @@ class _UpdateProductState extends State<UpdateProduct> {
   }
 
   getCategory() async {
-
     // SharedPreferences preferences = await SharedPreferences.getInstance();
     var headers = {
       'Cookie': 'ci_session=ea5681bb95a83750e0ee17de5e4aa2dca97184ef'
@@ -211,7 +208,6 @@ class _UpdateProductState extends State<UpdateProduct> {
         print("${jsonResponse.data?[i].id}");
         category_id = jsonResponse.data?[i].id ?? "";
       }
-
       setState(() {
         getCatModel = jsonResponse;
       });
@@ -235,15 +231,21 @@ class _UpdateProductState extends State<UpdateProduct> {
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       var finalResponse = await response.stream.bytesToString();
+      log(finalResponse);
       final jsonResponse =
       GetSubCatModel.fromJson(json.decode(finalResponse));
       for (int i = 0; i < jsonResponse.data!.length; i++) {
         print("sub cat:${jsonResponse.data?[i].id}");
       }
-
       setState(() {
         getSubCatModel = jsonResponse;
+
+        if(catId == '') {
+          selectedSub = getProductModel?.data?.first.subCatName;
+        }
       });
+
+
     } else {
       print(response.reasonPhrase);
     }
@@ -268,7 +270,7 @@ class _UpdateProductState extends State<UpdateProduct> {
       final finalResult = GetBrandModel.fromJson(json.decode(finalResponse));
       setState(() {
         getBrandModel = finalResult;
-        print('____ffffff______${getBrandModel}_________');
+        selectBrand = getProductModel?.data?.first.brand;
       });
     } else {
       print(response.reasonPhrase);
@@ -278,17 +280,14 @@ class _UpdateProductState extends State<UpdateProduct> {
   String? selectedState;
   String? selectedSub;
   String?selectedCatId;
+
   @override
   Widget build(BuildContext context) {
-    print('____ssssss______${widget.pId}_________');
     return Scaffold(
 
       appBar: customAppBar(
           text: "Update Product", isTrue: false, context: context),
-      // appBar: AppBar(
-      //   title: Text('Add Product'),
-      //   backgroundColor: colors.primary,
-      // ),
+
       body: getBrandModel == null || getBrandModel == "" ? const Center(
           child: CircularProgressIndicator()) : SingleChildScrollView(
         child: Form(
@@ -349,6 +348,7 @@ class _UpdateProductState extends State<UpdateProduct> {
                               selectedSateIndex = getCatModel!.data!.indexOf(element);
                               selectedCatId = element.id;
                               selectedSub = null ;
+                              print(selectedSub);
                               getSubCategory(selectedCatId!);
                               //getStateApi();
                             }
@@ -622,7 +622,6 @@ class _UpdateProductState extends State<UpdateProduct> {
                           getBrandModel!.data!.forEach((element) {
                             if(element.name == value){
                               selectedSateIndex = getBrandModel!.data!.indexOf(element);
-
                               //getStateApi();
                             }
                           });
@@ -967,9 +966,7 @@ class _UpdateProductState extends State<UpdateProduct> {
 
 
                   const SizedBox(height: 20,),
-                  const Text(
-                    'Additional Info', style: TextStyle(fontSize: 17),),
-
+                  const Text('Additional Info', style: TextStyle(fontSize: 17),),
                   const SizedBox(height: 20,),
                   Custom_Text(text: 'Description', text2: '',),
                   const SizedBox(height: 15,),

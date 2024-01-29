@@ -2784,11 +2784,7 @@ class _B2BHomeState extends State<B2BHome> {
                       children: [
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SupplierScreen(
-                                    )));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => SupplierScreen()));
                           },
                           child: Column(
                             children: [

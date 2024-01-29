@@ -674,7 +674,7 @@ class _ClientScreenState extends State<ClientScreen> {
                               scrollDirection: Axis.horizontal,
                               physics: const ScrollPhysics(),
                               itemCount:
-                                  getClientModel!.data![i].vendorData!.length,
+                                  getClientModel!.data![i].vendorData?.length ?? 0,
                               //> 6 ? 6 : GetSub!.data![i].products!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 return GestureDetector(
@@ -786,7 +786,7 @@ class _ClientScreenState extends State<ClientScreen> {
                                                         width: 10,
                                                       ),
                                                       Text(
-                                                          "${getClientModel!.data![i].vendorData![index].sellerDataInfo!.storeName}" ??
+                                                          "${getClientModel!.data![i].vendorData![index].sellerDataInfo?.storeName}" ??
                                                               ''),
                                                     ],
                                                   ),
@@ -1057,6 +1057,11 @@ class _ClientScreenState extends State<ClientScreen> {
                                                                     Radius.circular(
                                                                         50)),
                                                             color: getClientModel!
+                                                                .data![
+                                                            i]
+                                                                .vendorData![
+                                                            index]
+                                                                .sellerDataInfo == null || getClientModel!
                                                                         .data![
                                                                             i]
                                                                         .vendorData![

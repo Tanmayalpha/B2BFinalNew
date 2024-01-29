@@ -449,12 +449,11 @@ class _MediaState extends State<Media> with TickerProviderStateMixin {
               Navigator.pop(context);
             } else if (widget.from == "other") {
               if (mediaList[index].isSelected) {
-                print('if');
                 otherImgList.add(mediaList[index].subDic! + "" + mediaList[index].name!);
-                otherImgUrlList.add(mediaList[index].image!.split('B2B')[1]);
+                print(mediaList[index].image!);
+                otherImgUrlList.add(mediaList[index].image!.split('.com/')[1]);
                 print(otherImgUrlList);
               } else {
-                print('else');
                 otherImgList.remove(mediaList[index].subDic! + "" + mediaList[index].name!);
                 otherImgUrlList.remove(mediaList[index].image!.split('B2B')[1]);
                 print(otherImgUrlList);
@@ -491,6 +490,7 @@ class _MediaState extends State<Media> with TickerProviderStateMixin {
 
 
         },
+        onLongPress: (){},
         child: Stack(
           children: [
             Row(
