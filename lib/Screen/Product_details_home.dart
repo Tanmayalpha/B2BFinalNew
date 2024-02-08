@@ -142,27 +142,18 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
               ),
                 const Text("Description: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
                 const SizedBox(height: 5),
-                Text("${getHomeProductDetails?.data?.first.shortDescription}"),
+                Text("${getHomeProductDetails?.data.first.shortDescription}"),
                 const SizedBox(height: 5,),
                 const Text("Address: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
-                Row(
-                  children: [
-                    Text("${getHomeProductDetails?.data?.first.address}"
-                    ),
-                    SizedBox(width: 2,),
-                    Text("${getHomeProductDetails?.data?.first.city}, ",),
-                    SizedBox(width: 2,),
-                     Text( "${getHomeProductDetails?.data?.first.pincode}, "),
-                  ],
+                Text("${getHomeProductDetails?.data.first.address}"
                 ),
-               Row(
-                 children: [
-                   Text("${getHomeProductDetails?.data?.first.destrict}, "),
-                   const SizedBox(width: 2,),
-                   Text("${getHomeProductDetails?.data?.first.stateName}"),
-                 ],
-               ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 5,),
+                Text("${getHomeProductDetails?.data.first.city},",),
+                Text("${getHomeProductDetails?.data.first.pincode},"),
+               Text("${getHomeProductDetails?.data.first.destrict},"),
+               Text("${getHomeProductDetails?.data.first.stateName}"),
+                const Text("India"),
+                const SizedBox(height: 10),
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -174,19 +165,18 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                             children: [
                               const CircleAvatar(
                                 radius: 15,
-                                backgroundColor:
-                                colors.primary,
+                                backgroundColor: colors.primary,
                                 child: Icon(
                                   Icons.location_pin,
                                   size: 15,
                                   color: colors.white,
                                 ),
                               ),
-                              const SizedBox(width: 7,),
+                              const SizedBox(width: 7),
                               Image.asset("Images/phone.png", scale: 2),
-                              const SizedBox(width: 7,),
+                              const SizedBox(width: 7),
                               Image.asset("Images/person.png", scale: 2),
-                              const SizedBox(width: 7,),
+                              const SizedBox(width: 7),
                               Image.asset("Images/register.png", scale: 2),
                             ],
                           ),
@@ -199,7 +189,7 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                             width: 150,
                             title: "Contact Supplier",
                             onPress: () {
-                              showDialogContactSuplier(getHomeProductDetails?.data?.first.id ?? "", mobilee);
+                              showDialogContactSuplier(getHomeProductDetails?.data.first.id ?? "", mobilee);
                             },
                           ),
                         ),
@@ -207,7 +197,6 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -231,7 +220,6 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
         context: context,
         builder: (context) {
           return StatefulBuilder(builder: (context, setState) {
-
             return AlertDialog(
               backgroundColor: Colors.transparent,
               content: Container(

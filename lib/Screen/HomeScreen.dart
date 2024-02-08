@@ -445,7 +445,6 @@ class _B2BHomeState extends State<B2BHome> {
   // ];
   TextEditingController searchC = TextEditingController();
 
-
   bool isSwitched = false;
   var textValue = 'General';
 
