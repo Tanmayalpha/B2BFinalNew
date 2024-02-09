@@ -18,6 +18,7 @@ import '../color.dart';
 import '../utils/design_config.dart';
 import '../widgets/appButton.dart';
 import 'HomeScreen.dart';
+import 'Product_details_home.dart';
 
 
 class SearchScreen extends StatefulWidget {
@@ -328,7 +329,7 @@ class _SearchScreenState extends State<SearchScreen> {
             itemBuilder: (BuildContext context, int index) {
               return InkWell(
                 onTap: (){
-                  //Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailsHome(pId: searchList!.data![index].productId)));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailsHome(pId: searchList![index].id)));
                 },
                 child: Container(
                   width:

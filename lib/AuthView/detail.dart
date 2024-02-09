@@ -236,38 +236,6 @@ class _DetailPageState extends State<DetailPage> {
     }
   }
 
-  Future<void> _showPdfAlert() async {
-    if (_filePath != null) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('PDF Viewer'),
-            content: Container(
-              width: double.infinity,
-              height: 300, // Set the desired height
-              child: PDFView(
-                filePath: _filePath!,
-                onPageChanged: (int? page, int? totalPages) {},
-                onViewCreated: (PDFViewController pdfViewController) {},
-                onRender: (int? pages) {},
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  showExitPopup1();
-                },
-                child: const Text('Close'),
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +323,6 @@ class _DetailPageState extends State<DetailPage> {
                                       labelStyle:
                                       TextStyle(color: Colors.black26),
                                     ),
-
                                     validator: (val) {
                                       if (val!.isEmpty) {
                                         return "Business Name cannot be empty";
@@ -627,6 +594,114 @@ class _DetailPageState extends State<DetailPage> {
                                 padding: const EdgeInsets.only(left: 25),
                                 child: InkWell(
                                   onTap: () {
+                                    showPdfPopUp();
+                                    // if(_filePath != null){
+                                    //   // _showPdfAlert();
+                                    // }
+                                    // else{
+                                    //   showExitPopup1();
+                                    // }
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0, right: 0, top: 10),
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: pdfFile == null ? 50 : 140,
+                                      child: pdfFile == null
+                                          ? Row(
+                                        children:  const [
+                                          Padding(
+                                            padding:
+                                            EdgeInsets.only(left: 14, right: 13),
+                                            child: Icon(
+                                              Icons.business_sharp,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Business Broucher (Optional)',
+                                            style: TextStyle(
+                                                color: colors.black,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                fontSize: 13),
+                                              ),
+                                            ],
+                                         )
+                                          // : _filePath == null?
+                                          : Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 20),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: const [
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  "Business Broucher (Optional)",
+                                                  style: TextStyle(
+                                                      color: colors.black,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontSize: 13),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 5),
+                                            pdfFile?.path.split('.').last.toLowerCase() == 'pdf'  ?
+                                              Container(
+                                                //width: 200.0,
+                                                //height: 120.0,
+                                                padding: const EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children:  [
+                                                    const Icon(
+                                                      Icons.picture_as_pdf,
+                                                      size: 50.0,
+                                                      color: Colors.red,
+                                                    ),
+                                                    const SizedBox(height: 8.0),
+                                                    Text(
+                                                        ' ${pdfFile?.path.split('/').last.toLowerCase()}',
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontSize: 16.0,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ) : ClipRRect(
+                                              borderRadius:
+                                              BorderRadius.circular(10),
+                                              child: Image.file(
+                                                pdfFile!,
+                                                height: 100,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                            // :const SizedBox.shrink()
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const Divider(
+                                  color: Colors.grey,
+                                  indent: 30,
+                                  endIndent: 30,
+                                  thickness: 1),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 25),
+                                child: InkWell(
+                                  onTap: () {
                                     showExitPopup1();
                                     // if(_filePath != null){
                                     //   // _showPdfAlert();
@@ -653,7 +728,7 @@ class _DetailPageState extends State<DetailPage> {
                                             ),
                                           ),
                                           Text(
-                                            'Business Broucher (Optional)',
+                                            'Business Profile Image(Optional)',
                                             style: TextStyle(
                                                 color: colors.black,
                                                 fontWeight:
@@ -662,7 +737,7 @@ class _DetailPageState extends State<DetailPage> {
                                           ),
                                         ],
                                       )
-                                          // : _filePath == null?
+                                      // : _filePath == null?
                                           : Padding(
                                         padding: const EdgeInsets.only(
                                             left: 10, right: 20),
@@ -674,7 +749,7 @@ class _DetailPageState extends State<DetailPage> {
                                                   width: 10,
                                                 ),
                                                 Text(
-                                                  "Business Broucher (Optional)",
+                                                  "Business Profile Image (Optional)",
                                                   style: TextStyle(
                                                       color: colors.black,
                                                       fontWeight:
@@ -683,48 +758,46 @@ class _DetailPageState extends State<DetailPage> {
                                                 ),
                                               ],
                                             ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                              imageFile?.path.split('.').last.toLowerCase() == 'pdf'  ?
-                                              Container(
-                                                //width: 200.0,
-                                                //height: 120.0,
-                                                padding: const EdgeInsets.all(16.0),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children:  [
-                                                    const Icon(
-                                                      Icons.picture_as_pdf,
-                                                      size: 50.0,
-                                                      color: Colors.red,
+                                            const SizedBox(height: 5),
+                                            // imageFile?.path.split('.').last.toLowerCase() == 'pdf'  ?
+                                            Container(
+                                              //width: 200.0,
+                                              //height: 120.0,
+                                              padding: const EdgeInsets.all(16.0),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children:  [
+                                                  const Icon(
+                                                    Icons.picture_as_pdf,
+                                                    size: 50.0,
+                                                    color: Colors.red,
+                                                  ),
+                                                  const SizedBox(height: 8.0),
+                                                  Text(
+                                                    ' ${imageFile?.path.split('/').last.toLowerCase()}',
+                                                    overflow: TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      fontSize: 16.0,
+                                                      fontWeight: FontWeight.bold,
                                                     ),
-                                                    const SizedBox(height: 8.0),
-                                                    Text(
-                                                        ' ${imageFile?.path.split('/').last.toLowerCase()}',
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontSize: 16.0,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                                  : ClipRRect(
-                                              borderRadius:
-                                              BorderRadius.circular(10),
-                                              child: Image.file(
-                                                imageFile!,
-                                                height: 100,
-                                                width: double.infinity,
-                                                fit: BoxFit.cover,
+                                                  ),
+                                                ],
                                               ),
-                                            ),
+                                            )
+                                            //     : ClipRRect(
+                                            //   borderRadius:
+                                            //   BorderRadius.circular(10),
+                                            //   child: Image.file(
+                                            //     imageFile!,
+                                            //     height: 100,
+                                            //     width: double.infinity,
+                                            //     fit: BoxFit.cover,
+                                            //   ),
+                                            // ),
                                           ],
                                         ),
                                       ),
-                                            // :const SizedBox.shrink()
+                                      // :const SizedBox.shrink()
                                     ),
                                   ),
                                 ),
@@ -1013,8 +1086,6 @@ class _DetailPageState extends State<DetailPage> {
                                         ),
                                       ),
                                     );
-
-
                                   },
                                   controller: googleAddressController,
                                   cursorColor: Colors.black,
@@ -1314,6 +1385,8 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   File? imageFile;
+  File? pdfFile;
+  File? businessImage;
 
   Future getImage(ImageSource source, BuildContext context, int i) async {
     var image = await ImagePicker().pickImage(
@@ -1322,6 +1395,8 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       if (i == 1) {
         imageFile = File(image!.path);
+      }else{
+        businessImage  = File(image!.path);
       }
     });
     Navigator.pop(context);
@@ -1334,6 +1409,31 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       if (i == 1) {
         imageFile = File(image!.path);
+      }
+    });
+    Navigator.pop(context);
+  }
+
+
+  Future getImagePdf(ImageSource source, BuildContext context, int i) async {
+    var image = await ImagePicker().pickImage(
+      source: source,
+    );
+    setState(() {
+      if (i == 1) {
+        pdfFile = File(image!.path);
+      }
+    });
+    Navigator.pop(context);
+  }
+
+  Future getImageCmeraPdf(ImageSource source, BuildContext context, int i) async {
+    var image = await ImagePicker().pickImage(
+      source: source,
+    );
+    setState(() {
+      if (i == 1) {
+        pdfFile = File(image!.path);
       }
     });
     Navigator.pop(context);
@@ -1373,6 +1473,49 @@ class _DetailPageState extends State<DetailPage> {
                 ),
               ),
               const SizedBox(
+                 width: 11,
+                 ),
+              ],
+           ),
+         ),
+      ) ??
+        false; //if showDialouge had returned null, then return false
+  }
+
+  Future<bool> showPdfPopUp() async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+          title: const Text('Select Image'),
+          content: Row(
+            // crossAxisAlignment: CrossAxisAlignment.s,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: 30,
+                width: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    getImagePdf(ImageSource.camera, context, 1);
+                  },
+                  child: const Text('Camera', style: TextStyle(fontSize: 10),),
+                ),
+              ),
+              const SizedBox(
+                width: 11,
+              ),
+              Container(
+                height: 30,
+                width: 70,
+                child: ElevatedButton(
+                  onPressed: () {
+                    getImageCmeraPdf(ImageSource.gallery, context, 1);
+                  },
+                  //return true when click on "Yes"
+                  child: const Text('Gallery', style: TextStyle(fontSize: 10)),
+                ),
+              ),
+              const SizedBox(
                 width: 11,
               ),
               Container(
@@ -1385,7 +1528,7 @@ class _DetailPageState extends State<DetailPage> {
                     // getImageCmera(ImageSource.gallery, context, 1);
                   },
                   //return true when click on "Yes"
-                  child: const Text('PDf', style: TextStyle(fontSize: 10),),
+                  child: const Text('PDf', style: TextStyle(fontSize: 10)),
                 ),
               ),
             ],
@@ -1426,8 +1569,10 @@ class _DetailPageState extends State<DetailPage> {
     print('____Sasasass______${request.fields}_________');
 
     if (imageFile != null) {
-      request.files.add(
-          await http.MultipartFile.fromPath('broucher', imageFile?.path ?? ""));
+      request.files.add(await http.MultipartFile.fromPath('broucher', imageFile?.path ?? ""));
+    }
+    if (pdfFile != null) {
+      request.files.add(await http.MultipartFile.fromPath('profile_image', pdfFile?.path ?? ""));
     }
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -1441,7 +1586,6 @@ class _DetailPageState extends State<DetailPage> {
           userIdd1 = finalResult['data'].toString();
           print('user id in rigister time=============$userIdd1');
         });
-
         final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
         sharedPreferences.setString('id', userIdd1);
@@ -1452,7 +1596,6 @@ class _DetailPageState extends State<DetailPage> {
           backgroundColor: Colors.black54,
           textColor: colors.white,
         );
-
         if (isFrom) {
           await Future.delayed(const Duration(seconds: 1));
           if (context.mounted)

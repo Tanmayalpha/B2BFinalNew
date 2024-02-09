@@ -760,7 +760,7 @@ class _B2BHomeState extends State<B2BHome> {
   String? controller;
   String? controllerDelete;
   String? OTPIS;
-  sendOtpCotactSuplier(String ProductId) async {
+  sendOtpCotactSuplier(String ProductId,String? sellerId,String subType) async {
     var headers = {
       'Cookie': 'ci_session=aa35b4867a14620a4c973d897c5ae4ec6c25ee8e'
     };
@@ -793,13 +793,13 @@ class _B2BHomeState extends State<B2BHome> {
         });
 
         Navigator.pop(context);
-        showDialogverifyContactSuplier(ProductId);
+        showDialogverifyContactSuplier(ProductId,sellerId,textValue);
       }
     } else {
       print(response.reasonPhrase);
     }
   }
-  void showDialogContactSuplier(String productId, Mobile) async {
+  void showDialogContactSuplier(String productId, Mobile, String? sellerId,String subType) async {
     return await showDialog(
         context: context,
         builder: (context) {
@@ -922,11 +922,13 @@ class _B2BHomeState extends State<B2BHome> {
                                   left: 10, right: 10),
                               child: TextFormField(
                                 maxLength: 10,
+
                                 controller: yourMobileNumber,
                                 decoration: InputDecoration(
                                   contentPadding:
                                   const EdgeInsets.only(top: 5, left: 5),
-                                  hintText: "Your Mobile",
+
+                                  hintText: "Your Mobile Number",
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
                                     borderRadius:
@@ -942,7 +944,7 @@ class _B2BHomeState extends State<B2BHome> {
 
                                   }
                                 },
-                                keyboardType: TextInputType.name,
+                                keyboardType: TextInputType.number,
                               ),
                             ),
                             const SizedBox(
@@ -995,7 +997,7 @@ class _B2BHomeState extends State<B2BHome> {
                           onPress: () {
                             print('__________OTP_________');
                             if (_Cotact.currentState!.validate()) {
-                              sendOtpCotactSuplier(productId);
+                              sendOtpCotactSuplier(productId,sellerId,textValue);
                             }
                           },
                         )
@@ -1008,7 +1010,7 @@ class _B2BHomeState extends State<B2BHome> {
           });
         });
   }
-  void showDialogverifyContactSuplier(String productIddd) async {
+  void showDialogverifyContactSuplier(String productIddd,String? sellerId,String subType) async {
     return await showDialog(
         context: context,
         builder: (context) {
@@ -1087,7 +1089,7 @@ class _B2BHomeState extends State<B2BHome> {
                         title: "Verify OTP",
                         onPress: () {
                           if (controller == OTPIS) {
-                            sendEnqury(productIddd);
+                            sendEnqury(productIddd,sellerId,textValue);
                           } else {
                             Fluttertoast.showToast(msg: 'Enter Correct OTP');
                           }
@@ -1101,7 +1103,7 @@ class _B2BHomeState extends State<B2BHome> {
           });
         });
   }
-  Future<void> sendEnqury(String productid) async {
+  Future<void> sendEnqury(String productid,String? sellerId,String subType) async {
     var headers = {
       'Cookie': 'ci_session=ff1e2af38a215d1057b062b8ff903fc27b0c488b'
     };
@@ -1113,13 +1115,16 @@ class _B2BHomeState extends State<B2BHome> {
         'name': yournamecontroller.text.toString(),
         'mobile': yourMobileNumber.text.toString(),
         'city': YourcityController.text.toString(),
-        'product_id': productid.toString()
+        'product_id': productid.toString(),
+        'sup_type':subType,
+        'seller_id':sellerId??""
       });
     } else {
       request.fields.addAll({
         'mobile': yourMobileNumber.text.toString(),
         'product_id': productid.toString(),
-        'user_id': userId.toString(),
+        'user_id': userId.toString(),'sup_type':subType,
+        'seller_id':sellerId??""
       });
     }
     print('_____sssdsdsfsdfsdfsd_____${request.fields}_________');
@@ -1774,7 +1779,7 @@ class _B2BHomeState extends State<B2BHome> {
                                             builder: (context) =>
                                                 AllProduct(
                                                     catId: homeCategory!
-                                                        .data![index].id)),
+                                                        .data![index].id.toString())),
                                       );
                                     },
                                     child: Card(
@@ -2395,7 +2400,9 @@ class _B2BHomeState extends State<B2BHome> {
                                           width: 150,
                                           title: "Contact Supplier",
                                           onPress: () {
-                                            showDialogContactSuplier(GetSub!.data![i].products![index].productId.toString(), mobilee);
+
+
+                                            showDialogContactSuplier(GetSub!.data![i].products![index].productId.toString(), mobilee,GetSub!.data![i].products![index].sellerId,textValue);
                                           },
                                         ),
                                       )
@@ -2422,7 +2429,7 @@ class _B2BHomeState extends State<B2BHome> {
       'Cookie': 'ci_session=ea5681bb95a83750e0ee17de5e4aa2dca97184ef'
     };
     var request =
-    http.MultipartRequest('POST', Uri.parse('${ApiService.getCatSpecific}'));
+    http.MultipartRequest('POST', Uri.parse(ApiService.getCatSpecific));
 
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
@@ -2430,6 +2437,8 @@ class _B2BHomeState extends State<B2BHome> {
       var finalResponse = await response.stream.bytesToString();
       final jsonResponse =
       GetCategoryModel.fromJson(json.decode(finalResponse));
+
+print("herere ${jsonResponse}");
 
       // String? category_id = jsonResponse.data?[0].id ?? "";
       // preferences.setString("category_id", category_id);
@@ -2935,7 +2944,7 @@ class _B2BHomeState extends State<B2BHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "All Categories",
+                      "",
                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
                     ),
                     InkWell(
@@ -2960,54 +2969,56 @@ class _B2BHomeState extends State<B2BHome> {
                 height: 5,
               ),
 
-              SizedBox(
-                height: 80,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AllProduct(
-                                  catIdSpeci:
-                                  getcategorymodel?.data?[index].id,
-                                  isTrue: true,
-                                )),
-                          );
-                        },
-                        child: Card(
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 2.4,
-                            height: 80,
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text(
-                                "${getcategorymodel?.data?[index].name ?? ''}",
-                                maxLines: 3,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+              // SizedBox(
+              //   height: 80,
+              //   child: ListView.builder(
+              //     shrinkWrap: true,
+              //     physics: const AlwaysScrollableScrollPhysics(),
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: 2,
+              //     itemBuilder: (context, index) {
+              //       return Padding(
+              //         padding: const EdgeInsets.all(10),
+              //         child: InkWell(
+              //           onTap: () {
+              //             print("=======caccacac===================");
+              //             Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => AllProduct(
+              //                     catId:
+              //                     getcategorymodel?.data?[index].id,
+              //                     isTrue: true,
+              //                   ),
+              //               ),
+              //             );
+              //           },
+              //           child: Card(
+              //             child: Container(
+              //               width: MediaQuery.of(context).size.width / 2.4,
+              //               height: 80,
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: Center(
+              //                 child: Text(
+              //                   getcategorymodel?.data?[index].name ?? '',
+              //                   maxLines: 3,
+              //                   style: const TextStyle(
+              //                     fontWeight: FontWeight.bold,
+              //                     fontSize: 15,
+              //                     overflow: TextOverflow.ellipsis,
+              //                   ),
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 10,
+              // ),
               carosalSlider(),
               const SizedBox(
                 height: 10,
@@ -3421,7 +3432,8 @@ class _B2BHomeState extends State<B2BHome> {
                                   homeSpecificModel!
                                       .data!.businsessData![index].id
                                       .toString(),
-                                  mobilee);
+                                  mobilee,homeSpecificModel!
+                                  .data!.businsessData![index].sellerId,textValue);
                             },
                             title: "Contact Supplier",
                           ),
@@ -4429,13 +4441,14 @@ class _B2BHomeState extends State<B2BHome> {
       print(response.reasonPhrase);
     }
   }
+
   GetHomeCategoryModel? homeCategory;
   homeCategories() async {
     var headers = {
       'Cookie': 'ci_session=a0c4a8147cd6ca589ca5ea95dd55a72e8678d0d2'
     };
     var request = http.MultipartRequest(
-        'POST', Uri.parse('${ApiService.getHomeCategories}'));
+        'POST', Uri.parse(ApiService.getHomeCategories));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -4443,6 +4456,7 @@ class _B2BHomeState extends State<B2BHome> {
       final jsonResponse =
       GetHomeCategoryModel.fromJson(json.decode(finalResponse));
       homeCategory = jsonResponse;
+      print(finalResponse +"HOME CATGERws");
       setState(() {
         homeCategory = jsonResponse;
       });
@@ -4450,12 +4464,13 @@ class _B2BHomeState extends State<B2BHome> {
       print(response.reasonPhrase);
     }
   }
+
   getAdvertisgment() async {
     var headers = {
       'Cookie': 'ci_session=87537d5333112235532d1b40405b3ecb111f87e4'
     };
     var request =
-    http.Request('GET', Uri.parse('${ApiService.advertiesgment}'));
+    http.Request('GET', Uri.parse(ApiService.advertiesgment));
 
     request.headers.addAll(headers);
 
@@ -4467,12 +4482,13 @@ class _B2BHomeState extends State<B2BHome> {
       print(response.reasonPhrase);
     }
   }
+
   sliderImages() async {
     var headers = {
       'Cookie': 'ci_session=cfaf8a5af69a02ff6166d842c050ff4aa1d64eb1'
     };
     var request =
-    http.Request('POST', Uri.parse('${ApiService.getSliderImage}'));
+    http.Request('POST', Uri.parse(ApiService.getSliderImage));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
@@ -4588,7 +4604,7 @@ class _B2BHomeState extends State<B2BHome> {
                         color: colors.primary,
                         height: 60,
                         child:  Row(
-                          children: [
+                          children: const [
                             SizedBox(
                               width: 20,
                             ),

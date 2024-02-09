@@ -140,13 +140,29 @@ class _ProductDetailsHomeState extends State<ProductDetailsHome> {
                   ],
                 )
               ),
+                Container(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      const Text("Price :",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold)),
+                      Text("  Rs ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold)),
+
+                      Text(getHomeProductDetails?.maxPrice!.toString()??"",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 20,),
+                const SizedBox(width: 20,),
                 const Text("Description: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
                 const SizedBox(height: 5),
                 Text("${getHomeProductDetails?.data.first.shortDescription}"),
-                const SizedBox(height: 5,),
+                const SizedBox(height: 5),
+                const Text("Size: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
+                const SizedBox(height: 5),
+                Text("${getHomeProductDetails?.data.first.attributeValue}"),
+                const SizedBox(height: 8,),
                 const Text("Address: ",style: TextStyle(color: colors.black,fontWeight: FontWeight.bold),),
-                Text("${getHomeProductDetails?.data.first.address}"
-                ),
+                Text("${getHomeProductDetails?.data.first.address}"),
                 const SizedBox(height: 5,),
                 Text("${getHomeProductDetails?.data.first.city},",),
                 Text("${getHomeProductDetails?.data.first.pincode},"),

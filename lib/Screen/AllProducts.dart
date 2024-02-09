@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Api.path.dart';
+import '../Model/AdModel.dart';
 import '../Model/AllProductModel.dart';
 import '../Model/businessCategoruModel.dart';
 import '../apiServices/apiConstants.dart';
@@ -22,7 +24,7 @@ import 'Product_details_home.dart';
 
 class AllProduct extends StatefulWidget {
   AllProduct({Key? key, this.catName, this.catId,this.isTrue,this.catIdSpeci}) : super(key: key);
-  final String? catId,catIdSpeci;
+  final String? catId, catIdSpeci;
   final String? catName;
   bool? isTrue;
 
@@ -36,6 +38,7 @@ class _AllProductState extends State<AllProduct> {
   @override
   void initState() {
     super.initState();
+    getAdvertisgment();
     getProfile();
     getUserId();
     getAllProducts();
@@ -73,6 +76,27 @@ class _AllProductState extends State<AllProduct> {
   //     }
   //   });
   // }
+
+  getAdvertisgment() async {
+    var headers = {
+      'Cookie': 'PHPSESSID=vhk30ft0rihdb8lu81k71ps1hs'
+    };
+    var request = http.MultipartRequest('POST', Uri.parse(ApiService.advertiesgment));
+    request.fields.addAll({
+      'category_id':  widget.catId ?? "",
+    });
+    print("catrtrt ${request.fields}");
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      var store = await response.stream.bytesToString();
+      adImages = AdModel.fromJson(json.decode(store));
+    } else {
+      print(response.reasonPhrase);
+    }
+  }
+
+
   AllProductModel?allProductModel;
   getAllProducts() async {
      var headers = {
@@ -80,7 +104,7 @@ class _AllProductState extends State<AllProduct> {
      };
      var request = http.MultipartRequest('POST', Uri.parse('${baseUrl}fetch_product_by_fillters'));
      request.fields.addAll({
-       'category_id': widget.catIdSpeci ?? "",
+       'category_id': widget.catId ?? "",
       if( businessName != 'Select All')
        'buisness_category': businessName == null ? "":"${businessName}"
      });
@@ -211,7 +235,7 @@ class _AllProductState extends State<AllProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(text: "All Product",isTrue: false, context: context),
-      body: allProductModel ==  null ? Center(child: CircularProgressIndicator(color: colors.primary,),): SingleChildScrollView(
+      body: allProductModel ==  null ? const Center(child: CircularProgressIndicator(color: colors.primary,),): SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(
@@ -418,6 +442,9 @@ class _AllProductState extends State<AllProduct> {
                 ),
               ],
             ),
+            const SizedBox(height: 10,),
+            carosalSlider(),
+            const SizedBox(height: 10,),
             Container(
               // alignment: Alignment.center,
               child: allProductModel!.data!.isEmpty ?const Center(child: Text("No Product Found!!")):ListView.builder(
@@ -787,19 +814,15 @@ class _AllProductState extends State<AllProduct> {
     }
 
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
       var result = await response.stream.bytesToString();
       var finalresult = jsonDecode(result);
       if (finalresult['error'] == false) {
         setState(() {
           verifie = true;
-
           OTPIS = finalresult['data']['otp'].toString();
         });
-
         Navigator.pop(context);
         showDialogverifyContactSuplier(ProductId);
       }
@@ -807,6 +830,47 @@ class _AllProductState extends State<AllProduct> {
       print(response.reasonPhrase);
     }
   }
+  final CarouselController carouselController = CarouselController();
+  int currentIndex = 0;
+  Widget carosalSlider(){
+    return adImages!.data.isEmpty ? Container():
+      Container(
+      height: 200,
+      width: MediaQuery.of(context).size.width / 1.0,
+      margin:
+      const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      child: CarouselSlider(
+        items: adImages?.data
+            .map(
+              (item) => Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                ApiService.adbaseUrl + item.name,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            ),
+          ),
+        )
+            .toList(),
+        carouselController: carouselController,
+        options: CarouselOptions(
+          scrollPhysics: const BouncingScrollPhysics(),
+          autoPlay: true,
+          aspectRatio: 1,
+          viewportFraction: 1,
+          onPageChanged: (index, reason) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   void showDialogContactSuplier(String productId) async {
     return await showDialog(
         context: context,
